@@ -1,0 +1,317 @@
+/*
+ * Phenol93 / blivechat 右侧弹幕栏皮肤 v1.0
+ * 适配：blivechat 默认（Classic / YouTube）模板
+ * 设计：2003–2013 中国互联网日常感 / 蓝灰细框 / 小型信息窗口
+ * 推荐显示区域（以 1920x1080 为例）：宽约 360px，高约 575px
+ * 注意：直播 UI 自己已经画好了“弹幕>>>>>>”标题和边框，
+ * 此 CSS 只负责其中滚动的消息内容，不再绘制外层窗口。
+ */
+
+/* 1. 整体颜色和字号：日后只需先改这里 */
+yt-live-chat-renderer {
+  --p93-ink: #2b4255;
+  --p93-name: #3a6689;
+  --p93-blue: #668ba9;
+  --p93-line: #bfcedb;
+  --p93-paper: rgba(238, 244, 248, 0.94);
+  --p93-paper-member: rgba(226, 237, 247, 0.96);
+  --p93-member-strong: #5e83a4;
+  --p93-member-border: #8faec7;
+  --p93-gold: #b49366;
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif !important;
+  --yt-live-chat-background-color: transparent;
+}
+
+/* 2. 必需：背景透明，不盖住直播 UI 现有白底与窗口边框 */
+html,
+body,
+yt-live-chat-app,
+yt-live-chat-renderer,
+yt-live-chat-ticker-renderer,
+yt-live-chat-author-chip #author-name {
+  background-color: transparent !important;
+}
+
+/* 3. 必需：隐藏滚动条和原站点多余控件 */
+body,
+yt-live-chat-item-list-renderer #item-scroller {
+  overflow: hidden !important;
+}
+yt-live-chat-header-renderer,
+yt-live-chat-message-input-renderer,
+yt-live-chat-mode-change-message-renderer,
+yt-live-chat-viewer-engagement-message-renderer {
+  display: none !important;
+}
+
+/* 顶部已存在“弹幕”标题；右侧窄栏不再占位置放 SC 固定横幅。 */
+yt-live-chat-ticker-renderer {
+  display: none !important;
+}
+
+yt-live-chat-item-list-renderer #items {
+  padding: 8px 6px 10px !important;
+}
+
+/* 4. 普通弹幕：老软件信息条，而不是圆角聊天气泡 */
+yt-live-chat-text-message-renderer {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  padding: 8px 8px !important;
+  margin: 0 0 6px !important;
+  border: 1px solid var(--p93-line) !important;
+  border-left: 3px solid var(--p93-blue) !important;
+  border-radius: 2px !important;
+  background: var(--p93-paper) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85) !important;
+}
+
+yt-live-chat-text-message-renderer #content {
+  box-sizing: border-box !important;
+  display: block !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* 头像：有早期论坛的方形小头像味道，给文字腾空间 */
+yt-live-chat-text-message-renderer #author-photo,
+yt-live-chat-text-message-renderer #author-photo img {
+  box-sizing: border-box !important;
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  border-radius: 2px !important;
+}
+
+yt-live-chat-text-message-renderer #author-photo {
+  flex: 0 0 26px !important;
+  margin: 1px 8px 0 0 !important;
+  border: 1px solid #adbfce !important;
+  overflow: hidden !important;
+}
+
+/* 昵称单独一行，弹幕正文再占下一行 */
+yt-live-chat-text-message-renderer yt-live-chat-author-chip {
+  display: block !important;
+  max-width: 100% !important;
+  margin: 0 0 2px !important;
+  line-height: 1.2 !important;
+}
+
+yt-live-chat-text-message-renderer #author-name {
+  --font-size: 14px;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  color: var(--p93-name) !important;
+  font-family: inherit !important;
+  background: transparent !important;
+  overflow-wrap: anywhere !important;
+}
+
+yt-live-chat-text-message-renderer #timestamp {
+  display: none !important;
+}
+
+yt-live-chat-text-message-renderer #message,
+yt-live-chat-text-message-renderer #message :not(.emoji) {
+  --font-size: 16px;
+  font-family: inherit !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.42 !important;
+  color: var(--p93-ink) !important;
+  text-shadow: none !important;
+}
+
+yt-live-chat-text-message-renderer #message {
+  display: block !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  overflow-wrap: anywhere !important;
+  white-space: pre-wrap !important;
+}
+
+/* 大小表情分别处理，不强行压扁图片 */
+yt-live-chat-text-message-renderer #message .emoji {
+  width: auto !important;
+  height: 22px !important;
+  vertical-align: middle !important;
+}
+
+yt-live-chat-text-message-renderer #message .emoji.blc-large-emoji {
+  width: auto !important;
+  height: 64px !important;
+}
+
+yt-live-chat-text-message-renderer #content:has(.emoji.blc-large-emoji) > * {
+  vertical-align: top !important;
+}
+
+/* 舰队：更醒目一些，方便主播余光扫到；仍保持整体蓝灰气质 */
+yt-live-chat-text-message-renderer[author-type="member"] {
+  background: linear-gradient(to bottom, rgba(241,246,251,0.98), rgba(226,237,247,0.98)) !important;
+  border-color: var(--p93-member-border) !important;
+  border-left: 6px solid var(--p93-member-strong) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 0 0 1px rgba(118,145,171,0.10) !important;
+}
+
+yt-live-chat-text-message-renderer[author-type="member"] #author-name {
+  color: #2e5a7d !important;
+  font-weight: 800 !important;
+}
+
+yt-live-chat-text-message-renderer[author-type="member"] yt-live-chat-author-badge-renderer :is(img, yt-icon, svg) {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+yt-live-chat-text-message-renderer[author-type="moderator"] {
+  border-left-color: #476f94 !important;
+  background: rgba(225, 235, 245, 0.96) !important;
+}
+
+yt-live-chat-text-message-renderer[author-type="owner"] {
+  border-left-color: var(--p93-gold) !important;
+  background: rgba(244, 240, 231, 0.96) !important;
+}
+
+yt-live-chat-text-message-renderer[author-type="owner"] #author-name {
+  color: #906f44 !important;
+}
+
+yt-live-chat-text-message-renderer[author-type="moderator"] #author-name {
+  color: #355b7d !important;
+}
+
+yt-live-chat-text-message-renderer yt-live-chat-author-badge-renderer :is(img, yt-icon, svg) {
+  width: 15px !important;
+  height: 15px !important;
+  vertical-align: middle !important;
+}
+
+/* 5. 礼物与醒目留言（SC）：旧软件通知面板 */
+yt-live-chat-paid-message-renderer {
+  --yt-live-chat-paid-message-primary-color: #e7f0f6;
+  --yt-live-chat-paid-message-secondary-color: #698ca9;
+  --yt-live-chat-paid-message-header-color: #ffffff;
+  --yt-live-chat-paid-message-author-name-color: #ffffff;
+  --yt-live-chat-paid-message-timestamp-color: #dae6ef;
+  --yt-live-chat-paid-message-color: #2b4255;
+  display: block !important;
+  margin: 0 0 7px !important;
+}
+
+yt-live-chat-paid-message-renderer #card {
+  border: 1px solid #8eabc2 !important;
+  border-radius: 2px !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  background: #e7f0f6 !important;
+}
+
+yt-live-chat-paid-message-renderer #header {
+  background: #698ca9 !important;
+  padding: 7px 8px !important;
+}
+
+yt-live-chat-paid-message-renderer #author-name,
+yt-live-chat-paid-message-renderer #purchase-amount {
+  --font-size: 15px;
+  font-size: 15px !important;
+  font-family: inherit !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+yt-live-chat-paid-message-renderer #content,
+yt-live-chat-paid-message-renderer #message {
+  --font-size: 15px;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  line-height: 1.4 !important;
+  font-weight: 400 !important;
+  color: #2b4255 !important;
+  background: #e7f0f6 !important;
+}
+
+yt-live-chat-paid-message-renderer #content {
+  padding: 8px 9px !important;
+}
+
+/* 大额事件给一点暖金提示，避免荧光/霓虹 */
+yt-live-chat-paid-message-renderer:is(
+  [blc-price-level="4"], [blc-price-level="5"],
+  [blc-price-level="6"], [blc-price-level="7"]
+) #header {
+  background: #a78964 !important;
+}
+
+/* 6. 上舰通知：明显抬一级，像旧软件里的重点到达通知 */
+yt-live-chat-membership-item-renderer {
+  --yt-live-chat-sponsor-color: #e4eef6;
+  --yt-live-chat-sponsor-text-color: #ffffff;
+  display: block !important;
+  margin: 0 0 8px !important;
+}
+
+yt-live-chat-membership-item-renderer #card {
+  border: 1px solid var(--p93-member-border) !important;
+  border-left: 6px solid var(--p93-member-strong) !important;
+  border-radius: 2px !important;
+  background: #e4eef6 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.88), 0 1px 2px rgba(72,97,122,0.10) !important;
+  overflow: hidden !important;
+}
+
+yt-live-chat-membership-item-renderer #header {
+  background: var(--p93-member-strong) !important;
+  padding: 7px 9px !important;
+  margin: 0 !important;
+}
+
+yt-live-chat-membership-item-renderer #author-name,
+yt-live-chat-membership-item-renderer #header-subtext {
+  --font-size: 15px;
+  font-size: 15px !important;
+  font-family: inherit !important;
+  color: #ffffff !important;
+  line-height: 1.35 !important;
+}
+
+yt-live-chat-membership-item-renderer #message,
+yt-live-chat-membership-item-renderer #content {
+  --font-size: 15px;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  line-height: 1.4 !important;
+  color: #2b4255 !important;
+  background: #e4eef6 !important;
+}
+
+yt-live-chat-membership-item-renderer #content {
+  padding: 8px 9px !important;
+}
+
+yt-live-chat-membership-item-renderer yt-live-chat-author-badge-renderer :is(img, yt-icon, svg) {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* 7. 入场动画：轻轻上移 7px，模拟旧软件刷新一条记录 */
+@keyframes p93-message-in {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+yt-live-chat-item-list-renderer #items > * {
+  animation: p93-message-in 220ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  yt-live-chat-item-list-renderer #items > * { animation: none !important; }
+}
